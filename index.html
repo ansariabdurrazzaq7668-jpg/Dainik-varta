@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>दैनिक वार्ता</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF6EF;
+    --ink:#221F1C;
+    --ink-soft:#5A5450;
+    --red:#8C1F28;
+    --rule:#DDD3C4;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Noto Sans Devanagari','Noto Serif Devanagari',serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+
+  /* ---------- Masthead ---------- */
+  header.masthead{
+    max-width:760px;
+    margin:0 auto;
+    padding:36px 20px 18px;
+    text-align:center;
+    border-bottom:3px solid var(--ink);
+  }
+  .masthead-top{
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-bottom:18px;
+    border-bottom:1px solid var(--rule);
+    padding-bottom:10px;
+  }
+  h1.site-title{
+    font-family:'Noto Serif Devanagari',serif;
+    font-weight:800;
+    font-size:52px;
+    margin:0;
+    letter-spacing:0.5px;
+    color:var(--ink);
+  }
+  p.tagline{
+    margin:8px 0 0;
+    font-size:14px;
+    color:var(--red);
+    font-weight:600;
+  }
+
+  /* ---------- Layout ---------- */
+  main{
+    max-width:760px;
+    margin:0 auto;
+    padding:28px 20px 80px;
+  }
+
+  /* ---------- Article list ---------- */
+  .entry{
+    display:flex;
+    gap:18px;
+    padding:26px 0;
+    border-bottom:1px solid var(--rule);
+    cursor:pointer;
+  }
+  .entry:first-of-type{padding-top:6px;}
+  .entry img{
+    width:150px;
+    height:110px;
+    object-fit:cover;
+    flex-shrink:0;
+    background:var(--rule);
+  }
+  .entry-body h2{
+    font-family:'Noto Serif Devanagari',serif;
+    font-size:23px;
+    line-height:1.3;
+    margin:0 0 8px;
+    font-weight:700;
+  }
+  .entry-body h2:hover{color:var(--red);}
+  .entry-body p{
+    margin:0 0 10px;
+    font-size:15px;
+    line-height:1.6;
+    color:var(--ink-soft);
+  }
+  .meta{
+    font-size:12.5px;
+    color:var(--red);
+    font-weight:600;
+  }
+
+  /* ---------- Article detail page ---------- */
+  .back-link{
+    display:inline-block;
+    margin-bottom:22px;
+    font-size:14px;
+    color:var(--red);
+    font-weight:600;
+  }
+  .back-link:hover{text-decoration:underline;}
+
+  article h1{
+    font-family:'Noto Serif Devanagari',serif;
+    font-size:36px;
+    line-height:1.25;
+    font-weight:800;
+    margin:0 0 12px;
+  }
+  article .meta{
+    display:block;
+    margin-bottom:22px;
+    padding-bottom:18px;
+    border-bottom:1px solid var(--rule);
+  }
+  article figure{margin:0 0 24px;}
+  article img{
+    width:100%;
+    height:auto;
+    display:block;
+    background:var(--rule);
+  }
+  article figcaption{
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-top:8px;
+    font-style:italic;
+  }
+  article p{
+    font-size:17px;
+    line-height:1.9;
+    margin:0 0 20px;
+    max-width:66ch;
+  }
+  article p:first-of-type{
+    font-weight:600;
+  }
+
+  .hidden{display:none;}
+
+  footer{
+    max-width:760px;
+    margin:0 auto;
+    padding:24px 20px 50px;
+    text-align:center;
+    font-size:13px;
+    color:var(--ink-soft);
+    border-top:1px solid var(--rule);
+  }
+
+  @media (max-width:520px){
+    h1.site-title{font-size:36px;}
+    .entry{flex-direction:column;}
+    .entry img{width:100%;height:170px;}
+    article h1{font-size:27px;}
+    article p{font-size:16px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-top">
+    <span id="dateLine"></span>
+    <span>अंक — डेमो संस्करण</span>
+  </div>
+  <h1 class="site-title">दैनिक वार्ता</h1>
+  <p class="tagline">सच्ची खबर, सीधी बात</p>
+</header>
+
+<main>
+  <div id="homeView"></div>
+  <div id="articleView" class="hidden"></div>
+</main>
+
+<footer>
+  © दैनिक वार्ता — यह एक डेमो वेबसाइट है, सभी खबरें काल्पनिक हैं
+</footer>
+
+<script>
+const articles = [
+  {
+    id: 1,
+    title: "शहर में मेट्रो की नई लाइन का काम शुरू, तीन साल में पूरा होगा प्रोजेक्ट",
+    excerpt: "प्रशासन ने आज घोषणा की कि शहर के पूर्वी हिस्से को जोड़ने वाली नई मेट्रो लाइन पर काम आधिकारिक रूप से शुरू हो गया है। इससे रोज़ाना लाखों यात्रियों को फायदा मिलेगा।",
+    img: "https://picsum.photos/seed/metro1/400/260",
+    date: "10 सितंबर 2026",
+    body: [
+      "शहर के यातायात ढांचे में बड़ा बदलाव लाने की तैयारी में प्रशासन ने आज नई मेट्रो लाइन के निर्माण कार्य का शुभारंभ किया। यह लाइन शहर के पूर्वी और पश्चिमी हिस्सों को सीधे जोड़ेगी।",
+      "अधिकारियों के अनुसार यह परियोजना अगले तीन वर्षों में पूरी होने की उम्मीद है। इसके पूरा होने पर रोज़ाना करीब पाँच लाख यात्रियों को इसका सीधा लाभ मिलेगा और सड़कों पर वाहनों का दबाव कम होगा।",
+      "स्थानीय निवासियों ने इस फैसले का स्वागत किया है, हालांकि कुछ व्यापारियों ने निर्माण कार्य के दौरान होने वाली असुविधा को लेकर चिंता जताई है। प्रशासन ने भरोसा दिलाया है कि काम को चरणबद्ध तरीके से पूरा किया जाएगा।"
+    ]
+  },
+  {
+    id: 2,
+    title: "किसानों के लिए नई सिंचाई योजना का ऐलान, सरकार देगी सब्सिडी",
+    excerpt: "राज्य सरकार ने छोटे किसानों की मदद के लिए एक नई सिंचाई योजना का ऐलान किया है, जिसके तहत उपकरणों पर सीधी सब्सिडी दी जाएगी।",
+    img: "https://picsum.photos/seed/farm2/400/260",
+    date: "9 सितंबर 2026",
+    body: [
+      "राज्य सरकार ने किसानों की आय बढ़ाने और पानी की बचत को ध्यान में रखते हुए एक नई सिंचाई योजना की घोषणा की है। इस योजना के तहत ड्रिप और स्प्रिंकलर सिंचाई उपकरणों पर सीधी सब्सिडी दी जाएगी।",
+      "कृषि विभाग के अधिकारियों का कहना है कि इस योजना से छोटी जोत वाले किसानों को विशेष लाभ मिलेगा, जिन्हें अब तक महंगे उपकरण खरीदने में दिक्कत होती थी।",
+      "योजना के लिए आवेदन अगले महीने से शुरू होंगे। किसान अपने नज़दीकी कृषि कार्यालय में जाकर पंजीकरण करा सकेंगे।"
+    ]
+  },
+  {
+    id: 3,
+    title: "स्थानीय क्रिकेट टीम ने जीता राज्य स्तरीय टूर्नामेंट का खिताब",
+    excerpt: "रोमांचक फाइनल मुकाबले में स्थानीय टीम ने पड़ोसी जिले की टीम को हराकर लगातार दूसरी बार खिताब अपने नाम किया।",
+    img: "https://picsum.photos/seed/cricket3/400/260",
+    date: "9 सितंबर 2026",
+    body: [
+      "रविवार को खेले गए फाइनल मुकाबले में शहर की टीम ने शानदार प्रदर्शन करते हुए खिताब जीत लिया। मैच आखिरी ओवर तक रोमांचक बना रहा।",
+      "कप्तान ने मैच के बाद कहा कि यह जीत पूरी टीम की मेहनत का नतीजा है और आने वाले राष्ट्रीय स्तर के टूर्नामेंट के लिए यह एक अच्छी तैयारी साबित होगी।",
+      "टीम के इस प्रदर्शन पर शहरवासियों में खुशी की लहर है और जगह-जगह जश्न मनाया गया।"
+    ]
+  },
+  {
+    id: 4,
+    title: "बदलते मौसम को लेकर स्वास्थ्य विभाग ने जारी की एडवाइजरी",
+    excerpt: "मौसम में अचानक बदलाव के चलते वायरल बुखार के मामलों में बढ़ोतरी देखी जा रही है, विभाग ने सावधानी बरतने की सलाह दी है।",
+    img: "https://picsum.photos/seed/health4/400/260",
+    date: "8 सितंबर 2026",
+    body: [
+      "पिछले कुछ दिनों में मौसम में हुए बदलाव के कारण अस्पतालों में वायरल बुखार और खांसी-जुकाम के मरीज़ों की संख्या बढ़ गई है। स्वास्थ्य विभाग ने इसे देखते हुए एडवाइजरी जारी की है।",
+      "विभाग ने लोगों से अपील की है कि वे भीड़भाड़ वाली जगहों पर मास्क पहनें, साफ-सफाई का ध्यान रखें और लक्षण दिखने पर तुरंत डॉक्टर से संपर्क करें।",
+      "सरकारी अस्पतालों में इलाज की सभी सुविधाएं मुफ्त उपलब्ध कराई गई हैं।"
+    ]
+  }
+];
+
+const dateEl = document.getElementById('dateLine');
+const today = new Date();
+const hindiMonths = ["जनवरी","फ़रवरी","मार्च","अप्रैल","मई","जून","जुलाई","अगस्त","सितंबर","अक्टूबर","नवंबर","दिसंबर"];
+dateEl.textContent = today.getDate() + " " + hindiMonths[today.getMonth()] + " " + today.getFullYear();
+
+const homeView = document.getElementById('homeView');
+const articleView = document.getElementById('articleView');
+
+function renderHome(){
+  homeView.innerHTML = articles.map(a => `
+    <div class="entry" onclick="openArticle(${a.id})">
+      <img src="${a.img}" alt="">
+      <div class="entry-body">
+        <h2>${a.title}</h2>
+        <p>${a.excerpt}</p>
+        <span class="meta">${a.date}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openArticle(id){
+  const a = articles.find(x => x.id === id);
+  if(!a) return;
+  articleView.innerHTML = `
+    <a class="back-link" onclick="closeArticle()">&larr; सभी खबरों पर वापस जाएं</a>
+    <article>
+      <h1>${a.title}</h1>
+      <span class="meta">${a.date}</span>
+      <figure>
+        <img src="${a.img}" alt="">
+        <figcaption>प्रतीकात्मक तस्वीर</figcaption>
+      </figure>
+      ${a.body.map(p => `<p>${p}</p>`).join('')}
+    </article>
+  `;
+  homeView.classList.add('hidden');
+  articleView.classList.remove('hidden');
+  window.scrollTo(0,0);
+}
+
+function closeArticle(){
+  articleView.classList.add('hidden');
+  homeView.classList.remove('hidden');
+  window.scrollTo(0,0);
+}
+
+renderHome();
+</script>
+</body>
+</html>
