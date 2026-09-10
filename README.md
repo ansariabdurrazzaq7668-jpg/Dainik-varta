@@ -1,10 +1,10 @@
-# The cable 
+#dainik varta
 
 Simple Hindi news website — static HTML, कोई backend नहीं चाहिए।
 
 ## Deploy on Vercel (GitHub के ज़रिए)
 
-1. GitHub पर नया repository बनाओ (नाम कुछ भी रख सकते हो, जैसे `The cable`)
+1. GitHub पर नया repository बनाओ (नाम कुछ भी रख सकते हो, जैसे `dainik varta`)
 2. इस folder के सारे files (`index.html`) उस repo में upload/push करो
 3. [vercel.com](https://vercel.com) पर जाओ → Sign up (GitHub से)
 4. "Add New" → "Project" → अपनी repo select करो
